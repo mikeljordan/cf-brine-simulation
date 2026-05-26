@@ -1,0 +1,22 @@
+# Bind-mount target — must not be sent into the build context
+work/
+
+# Documentation — not needed inside the image
+README.md
+*.md
+
+# Git metadata
+.git/
+.gitignore
+.gitattributes
+
+# Editor / IDE config
+.idea/
+.vscode/
+.DS_Store
+
+# OS-specific clutter
+Thumbs.db
+
+# The Dockerfile itself is read separately, but excluding it is harmless
+# (some users do this for clarity)
