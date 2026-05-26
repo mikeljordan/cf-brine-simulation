@@ -5,7 +5,7 @@
 #   Oguntola, Duran, Keilegavlen, Berre (2026)
 #
 # Build:   docker build -t h2o-nacl-geothermal-simulator:v1.0.0  .
-# Run:     docker run --rm -it -v "$PWD/work:/workdir/data" h2o-nacl-geothermal-simulator:v1.0.0
+# Run:     docker run --rm -it h2o-nacl-geothermal-simulator:v1.0.0
 # =============================================================================
 
 # Base image: official PorePy development image (Python 3, gmsh, build tools)
@@ -29,6 +29,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libxss1 \
         libnss3 \
         libegl1 \
+        texlive-latex-base \
+        texlive-latex-extra \
+        texlive-fonts-recommended \
+        texlive-fonts-extra \
+        dvipng \
+        cm-super \
+        lmodern \
     && rm -rf /var/lib/apt/lists/* \
     && git lfs install
 
@@ -122,7 +129,9 @@ RUN mkdir -p /workdir/data/visualization \
 
 RUN python -m geothermal_flow.simulation_driver --help \
     && python -m geothermal_flow.make_figures --help \
-    && pvbatch --version
+    && pvbatch --version \
+    && latex --version \
+    && kpsewhich lmodern.sty
 
 # Default to an interactive shell.
 ENTRYPOINT ["bash"]
