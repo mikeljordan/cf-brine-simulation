@@ -32,7 +32,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         texlive-latex-base \
         texlive-latex-extra \
         texlive-fonts-recommended \
-        texlive-fonts-extra \
         dvipng \
         cm-super \
         lmodern \
