@@ -79,22 +79,12 @@ RUN git remote add paper_repo https://github.com/pmgbergen/porepy.git \
 ENV PYTHONPATH="/workdir/porepy/src:/workdir/porepy/src/porepy/examples:${PYTHONPATH}"
 
 # -----------------------------------------------------------------------------
-# Layer 5 — pp_solvers
-# Currently disabled. Re-enable if any code path imports pp_solvers.
-# -----------------------------------------------------------------------------
-# WORKDIR /workdir
-#
-# RUN git clone https://github.com/pmgbergen/porepy-iterative-solvers.git pp_solvers \
-#     && cd pp_solvers \
-#     && git checkout cf_brine_iterative_solver \
-#     && pip install --no-cache-dir -e .
-
-# -----------------------------------------------------------------------------
-# Layer 6 — Fetch large VTK lookup tables from Zenodo
+# Layer 4 — Fetch large VTK lookup tables from Zenodo
 # Dataset DOI: 10.5281/zenodo.20394023
 # MD5 checksums verified against the values published in the Zenodo deposit.
 # -----------------------------------------------------------------------------
 ENV VTK_DIR=/workdir/porepy/src/porepy/examples/geothermal_flow/model_configuration/constitutive_description/driesner_vtk_files
+
 ENV ZENODO_RECORD=20394023
 
 RUN mkdir -p ${VTK_DIR} \
@@ -109,7 +99,7 @@ RUN mkdir -p ${VTK_DIR} \
     && md5sum -c checksums.md5
 
 # -----------------------------------------------------------------------------
-# Layer 7 — Working directory and output symlinks
+# Layer 5 — Working directory and output symlinks
 # Users land in src/porepy/examples so `python -m geothermal_flow.X` works.
 # Output paths (visualization, output, csv, figures) are symlinks pointing
 # into /workdir/data, which is bind-mounted from the host at runtime.
@@ -123,7 +113,7 @@ RUN rm -rf visualization output csv figures \
     && ln -s /workdir/data/figures figures
 
 # -----------------------------------------------------------------------------
-# Layer 8 — Entrypoint script
+# Layer 6 — Entrypoint script
 # Creates the subdirectories under /workdir/data at container start, after
 # the bind mount is in place. This guarantees the symlink targets exist
 # regardless of whether the host directory was pre-populated.
