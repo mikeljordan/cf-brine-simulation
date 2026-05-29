@@ -4,7 +4,7 @@
 #    in High Enthalpy Fractured Geothermal Systems"
 #   Oguntola, Duran, Keilegavlen, Berre (2026)
 #
-# Build:   docker build -t h2o-nacl-geothermal-simulator:v1.0.0 .
+# Build:   docker build build --platform linux/amd64 -t h2o-nacl-geothermal-simulator:v1.0.0 .
 # Run:     docker run --rm -it \
 #              -v "$PWD/work:/workdir/data" \
 #              h2o-nacl-geothermal-simulator:v1.0.0
