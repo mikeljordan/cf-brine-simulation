@@ -90,9 +90,14 @@ mkdir -p work
 Start the container:
 
 ```bash
-docker run --rm -it \
+# Start container in background
+docker run -dit \
+  --name geothermal-run \
   -v "$PWD/work:/workdir/data" \
   h2o-nacl-geothermal-simulator:v1.0.0
+
+# Attach to it
+docker exec -it geothermal-run /bin/bash
 ```
 
 Inside the container, you will land in:
@@ -110,7 +115,7 @@ csv           -> /workdir/data/csv
 figures       -> /workdir/data/figures
 ```
 
-The entrypoint creates these output directories at container startup, after the host bind mount is active. :contentReference[oaicite:2]{index=2}
+The entrypoint creates these output directories at container startup, after the host bind mount is active.
 
 ---
 
