@@ -260,7 +260,7 @@ Some figures depend on more than one simulation.
 | Example 1 figures | example1 |
 | Example 2 figures | example2 |
 | Example 3 figures | example3 |
-| Comparison figures involving `φ = 0.1` and `φ = 1.0` | example1 and example2 |
+| Comparison figures involving $\varphi$ = 0.1 and $\varphi$ = 1.0 | example1 and example2 |
 
 In particular, near-well and production-diagnostics comparison figures require both Example 1 and Example 2 outputs.
 
@@ -402,39 +402,6 @@ If LaTeX errors still occur, rebuild the image from the current Dockerfile.
 The build downloads the VTK lookup tables from Zenodo record `20394023` and verifies their MD5 checksums. If the download or checksum check fails, retry the build. A persistent failure may indicate a network or Zenodo availability issue.
 
 ---
-
-## Saving the Docker image for Zenodo
-
-After testing, save the image as a compressed archive:
-
-```bash
-docker image save h2o-nacl-geothermal-simulator:v1.0.0 \
-  | gzip > h2o_nacl_geothermal_simulator_v1.0.0.tar.gz
-```
-
-Create a checksum:
-
-```bash
-shasum -a 256 h2o_nacl_geothermal_simulator_v1.0.0.tar.gz \
-  > h2o_nacl_geothermal_simulator_v1.0.0.tar.gz.sha256
-```
-
-To load the image later:
-
-```bash
-docker load -i h2o_nacl_geothermal_simulator_v1.0.0.tar.gz
-```
-
-Then run:
-
-```bash
-docker run --rm -it \
-  -v "$PWD/work:/workdir/data" \
-  h2o-nacl-geothermal-simulator:v1.0.0
-```
-
----
-
 ## Citation
 
 If you use this image, please cite:
