@@ -138,7 +138,7 @@ work/visualization/benchmark/
 
 ### Example 1
 
-Disconnected-fracture case with mild clogging, `φ = 0.1`.
+Disconnected-fracture case with injection rate, $q_{\text{inj}} = 0.28\text{kgm}^{-3}\text{s}^{-1}$.
 
 ```bash
 python -m geothermal_flow.simulation_driver \
@@ -153,7 +153,7 @@ work/visualization/example1/
 
 ### Example 2
 
-Disconnected-fracture case with stronger clogging, `φ = 1.0`.
+Disconnected-fracture case with injection rate, $q_{\text{inj}} = 0.364\text{kgm}^{-3}\text{s}^{-1}$.
 
 ```bash
 python -m geothermal_flow.simulation_driver \
