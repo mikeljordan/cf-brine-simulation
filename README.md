@@ -5,7 +5,7 @@ This repository provides the Docker image used to reproduce the simulations and 
 > Oguntola, M. B., Duran, O., Keilegavlen, E., Berre, I. (2026).  
 > *Mathematical Modeling of Salt Precipitation and Multi-Phase Flow in High Enthalpy Fractured Geothermal Systems.*
 
-The image contains the PorePy paper branch, ParaView 6.1.0, Python plotting dependencies, LaTeX support for Matplotlib text rendering, and the H₂O--NaCl thermodynamic lookup tables required by the simulations. The Dockerfile builds the image from `porepy/dev:latest`, switches to the `cf-dfm-salt-precipitation` branch, downloads the VTK lookup tables from Zenodo, and verifies their MD5 checksums during the build.
+The image contains the PorePy paper branch, ParaView 6.1.0, the Linux build of the swEOS CLI tool, Python plotting dependencies, LaTeX support for Matplotlib text rendering, and the H₂O--NaCl thermodynamic lookup tables required by the simulations. The Dockerfile builds the image from `porepy/dev:latest`, switches to the `cf-dfm-salt-precipitation` branch, downloads the VTK lookup tables from Zenodo, and verifies their MD5 checksums during the build.
 
 The thermodynamic lookup tables (~3 GB) are pulled from a Zenodo deposit:
 
@@ -196,6 +196,15 @@ python -m geothermal_flow.simulation_driver --config geothermal_flow/configs/exa
 
 The benchmark is the shortest useful smoke test. Some full examples may take a long time, depending on hardware.
 
+### Verification studies
+
+Run the interpolation and manufactured-solution convergence studies as described in the
+[main README](https://github.com/pmgbergen/porepy/blob/cf-dfm-salt-precipitation/src/porepy/examples/geothermal_flow/README.md);
+`swEOS` is already in place in the image. These studies write their results inside the container,
+under `geothermal_flow/obl_convergence_analysis/` and `geothermal_flow/cf_convergence_analysis/`,
+not to `work/`. Keep the container until the figures are generated; the figures themselves are copied
+to `work/figures/`.
+
 ---
 
 ## Generate figures
@@ -224,7 +233,7 @@ Generate selected figures:
 ```bash
 python -m geothermal_flow.make_figures \
   --config geothermal_flow/configs/figures.yaml \
-  --figures figure8 figure9
+  --figures figure10 figure11
 ```
 
 Preview commands without executing them:
@@ -261,6 +270,8 @@ Some figures depend on more than one simulation.
 | Example 2 figures | example2 |
 | Example 3 figures | example3 |
 | Comparison figures involving $\varphi$ = 0.1 and $\varphi$ = 1.0 | example1 and example2 |
+| `figure7` | interpolation study (`generate_tables` step) |
+| `figure8`, `figure21`, `figure22` | none; they replot results stored in the branch |
 
 In particular, near-well and production-diagnostics comparison figures require both Example 1 and Example 2 outputs.
 
@@ -293,6 +304,8 @@ work/
     example1/
     example2/
     example3/
+    obl/
+    mms/
 ```
 
 Because `work/` is mounted from the host, these files remain after the container exits.
@@ -303,7 +316,7 @@ Because `work/` is mounted from the host, these files remain after the container
 
 The container is removed when you exit because of `--rm`, but the image and host outputs remain.
 
-To re-enter:
+To re-enter the container:
 
 ```bash
 docker run --rm -it \
@@ -383,8 +396,8 @@ For headless rendering problems, use:
 
 ```bash
 xvfb-run -a python -m geothermal_flow.make_figures \
-  --config geothermal_flow/configs/figures_docker.yaml \
-  --figures figure8
+  --config geothermal_flow/configs/figures.yaml \
+  --figures figure10
 ```
 
 ### LaTeX or Matplotlib text errors
